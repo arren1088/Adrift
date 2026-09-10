@@ -116,7 +116,7 @@ export default function FeaturePage({ slug = 'map-diary', onNavigate }) {
         </section>
 
         <div className="public-info-actions">
-          <button className="primary-button" type="button" onClick={() => onNavigate('/register')}>
+          <button className="primary-button" type="button" onClick={() => onNavigate('/auth')}>
             開始漂流
           </button>
           <button className="landing-secondary-action as-button" type="button" onClick={() => onNavigate('/about')}>

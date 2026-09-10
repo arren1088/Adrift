@@ -230,8 +230,7 @@ export default function App() {
     setThemeState(themes.includes(nextTheme) ? nextTheme : 'dark');
   }, []);
 
-  const isAuthPage = currentPath === '/login' || currentPath === '/register';
-  const authMode = currentPath === '/register' ? 'register' : 'login';
+  const isAuthPage = currentPath === '/auth' || currentPath === '/login' || currentPath === '/register';
   const isFriendsPage = currentPath === '/friends';
   const isFeedPage = currentPath === '/feed';
   const isSettingsPage = currentPath === '/settings/account' || currentPath === '/settings';
@@ -272,7 +271,7 @@ export default function App() {
     setNotificationsOpen(false);
     setUserMenuOpen(false);
 
-    if (path !== '/login') {
+    if (path !== '/auth') {
       setAuthNotice('');
     }
   }, []);
@@ -300,7 +299,7 @@ export default function App() {
       setAuthNotice(message);
     }
 
-    navigate('/login');
+    navigate('/auth');
   }, [navigate]);
 
   const syncUser = useCallback((nextUser) => {
@@ -410,6 +409,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (currentPath !== '/login' && currentPath !== '/register') return;
+    window.history.replaceState({}, '', '/auth');
+    setCurrentPath('/auth');
+  }, [currentPath]);
+
+  useEffect(() => {
     const handleExpired = (event) => {
       logout(event.detail?.message || '登入狀態已失效，請重新登入');
     };
@@ -469,7 +474,7 @@ export default function App() {
 
   useEffect(() => {
     if (!user && !isAuthPage && !isPublicStandalonePage) {
-      navigate('/login');
+      navigate('/auth');
       return;
     }
 
@@ -662,25 +667,25 @@ export default function App() {
       setAuthError('');
       const payload = mode === 'login' ? await api.login(form) : await api.register(form);
 
-      if (mode === 'login') {
-        const token = payload.token || payload.data?.token;
-        const nextUser = payload.user || payload.data?.user;
-        if (!token || !nextUser) {
-          throw new Error('登入回應格式不正確，請稍後再試');
-        }
-        saveAuth(token, nextUser);
-        setUser(nextUser);
-        setMapMode('mine');
-        setVisibilityFilter('all');
-        setExploreCenter(null);
-        setMapFocusLocation(null);
-        navigate('/');
-        await Promise.all([loadDiaries({}, { silent: true }), loadSocial()]);
+      const token = payload.token || payload.data?.token;
+      const nextUser = payload.user || payload.data?.user;
+      if (!token || !nextUser) {
+        throw new Error('驗證回應格式不正確，請稍後再試');
       }
+
+      saveAuth(token, nextUser);
+      setUser(nextUser);
+      setMapMode('mine');
+      setVisibilityFilter('all');
+      setExploreCenter(null);
+      setMapFocusLocation(null);
+      navigate('/');
+      if (mode === 'register') showActionToast('歡迎來到 Adrift');
+      await Promise.all([loadDiaries({}, { silent: true }), loadSocial()]);
 
       return payload;
     } catch (error) {
-      setAuthError(mode === 'login' && (error.status === 401 || error.status === 404) ? 'Email 不存在或密碼錯誤' : error.message);
+      setAuthError(mode === 'login' && (error.status === 401 || error.status === 404) ? 'Email 或密碼不正確，請再試一次。' : error.message);
       throw error;
     } finally {
       setAuthLoading(false);
@@ -689,7 +694,7 @@ export default function App() {
 
   async function openNewDiary() {
     if (!user) {
-      navigate('/login');
+      navigate('/auth');
       return;
     }
 
@@ -871,7 +876,7 @@ export default function App() {
 
   async function activateExploreMode(radius = exploreRadius) {
     if (!user) {
-      navigate('/login');
+      navigate('/auth');
       return;
     }
 
@@ -1056,13 +1061,9 @@ export default function App() {
           )
         ) : !user && isAuthPage ? (
           <AuthPanel
-            key={authMode}
-            mode={authMode}
             onAuth={handleAuth}
-            onNavigate={navigate}
             onClearError={() => setAuthError('')}
             onClearNotice={() => setAuthNotice('')}
-            onRegisterSuccess={(message) => setAuthNotice(message)}
             loading={authLoading}
             error={authError}
             notice={authNotice}
@@ -1210,7 +1211,7 @@ export default function App() {
               </nav>
             </>
           ) : (
-            <button className="primary-button compact" onClick={() => navigate('/login')}>
+            <button className="primary-button compact" onClick={() => navigate('/auth')}>
               登入
             </button>
           )}

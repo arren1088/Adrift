@@ -197,7 +197,7 @@ function AboutContent({ onNavigate }) {
       </section>
 
       <div className="public-info-actions">
-        <button className="primary-button" type="button" onClick={() => onNavigate('/register')}>
+        <button className="primary-button" type="button" onClick={() => onNavigate('/auth')}>
           開始漂流
         </button>
         <button className="landing-secondary-action as-button" type="button" onClick={() => onNavigate('/privacy')}>
@@ -258,7 +258,7 @@ function PrivacyContent({ onNavigate }) {
       </section>
 
       <div className="public-info-actions">
-        <button className="primary-button" type="button" onClick={() => onNavigate('/register')}>
+        <button className="primary-button" type="button" onClick={() => onNavigate('/auth')}>
           開始漂流
         </button>
         <button className="landing-secondary-action as-button" type="button" onClick={() => onNavigate('/about')}>

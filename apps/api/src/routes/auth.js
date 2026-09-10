@@ -5,6 +5,32 @@ import { EMAIL_PATTERN, USER_CODE_PATTERN } from '../constants/app.js';
 import User from '../models/User.js';
 
 const router = express.Router();
+const emailCheckAttempts = new Map();
+const EMAIL_CHECK_WINDOW_MS = 10 * 60 * 1000;
+const EMAIL_CHECK_LIMIT = 20;
+
+function limitEmailChecks(req, res, next) {
+  const now = Date.now();
+  const key = req.ip;
+  const current = emailCheckAttempts.get(key);
+
+  if (!current || current.resetAt <= now) {
+    emailCheckAttempts.set(key, { count: 1, resetAt: now + EMAIL_CHECK_WINDOW_MS });
+    next();
+    return;
+  }
+
+  if (current.count >= EMAIL_CHECK_LIMIT) {
+    res.status(429).json({
+      success: false,
+      message: '嘗試次數過多，請稍後再試'
+    });
+    return;
+  }
+
+  current.count += 1;
+  next();
+}
 
 function createToken(user) {
   return jwt.sign({ sub: user._id.toString(), email: user.email }, process.env.JWT_SECRET, {
@@ -35,6 +61,28 @@ function shouldBeOwner(email) {
   return Boolean(ownerEmail && email === ownerEmail);
 }
 
+router.post('/check-email', limitEmailChecks, async (req, res, next) => {
+  try {
+    const normalizedEmail = req.body?.email?.toLowerCase().trim();
+
+    if (!normalizedEmail || !EMAIL_PATTERN.test(normalizedEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email 格式不正確'
+      });
+    }
+
+    const exists = Boolean(await User.exists({ email: normalizedEmail }));
+
+    res.set('Cache-Control', 'no-store').json({
+      success: true,
+      exists
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/register', async (req, res, next) => {
   try {
     const { name, email, password, userCode } = req.body;
@@ -62,10 +110,10 @@ router.post('/register', async (req, res, next) => {
       });
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: '密碼至少需要 6 個字元'
+        message: '密碼至少需要 8 個字元'
       });
     }
 
@@ -104,11 +152,17 @@ router.post('/register', async (req, res, next) => {
       passwordHash
     });
 
+    const token = createToken(user);
+    const serializedUser = serializeUser(user);
+
     res.status(201).json({
       success: true,
-      message: '註冊成功，請登入',
+      message: '帳號建立完成',
+      token,
+      user: serializedUser,
       data: {
-        user: serializeUser(user)
+        token,
+        user: serializedUser
       }
     });
   } catch (error) {

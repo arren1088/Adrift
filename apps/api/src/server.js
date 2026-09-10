@@ -22,6 +22,7 @@ if (!process.env.JWT_SECRET) {
 }
 
 const app = express();
+app.set('trust proxy', 1);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')

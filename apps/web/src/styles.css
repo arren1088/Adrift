@@ -2103,28 +2103,6 @@ select option {
   opacity: 0.9;
 }
 
-.auth-switch {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin: 2px 0 0;
-  color: #a9c7d7;
-  font-size: 0.9rem;
-}
-
-.auth-switch button {
-  padding: 0;
-  color: #8eeedc;
-  background: transparent;
-  font-weight: 800;
-}
-
-.auth-switch button:hover {
-  color: #ffffff;
-  text-shadow: 0 0 18px rgba(121, 241, 220, 0.52);
-}
-
 .password-control {
   position: relative;
   display: block;
@@ -4507,8 +4485,8 @@ select option {
   max-width: 760px;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(3rem, 8vw, 6.7rem);
-  line-height: 0.88;
+  font-size: clamp(2.7rem, 4.7vw, 4.3rem);
+  line-height: 1.02;
   letter-spacing: 0;
   background: linear-gradient(120deg, #ffffff 8%, #a8efff 38%, #79f1dc 68%, #b4a6ff 96%);
   -webkit-background-clip: text;
@@ -4517,16 +4495,13 @@ select option {
   -webkit-text-fill-color: transparent;
 }
 
-.auth-brand-english,
+.auth-brand-line {
+  white-space: nowrap;
+}
+
 .auth-brand-body {
   max-width: 590px;
   margin: 0;
-}
-
-.auth-brand-english {
-  color: #d9f6ff;
-  font-size: clamp(1.05rem, 2vw, 1.36rem);
-  line-height: 1.45;
 }
 
 .auth-brand-body {
@@ -4583,10 +4558,12 @@ select option {
 
 .auth-card {
   display: grid;
-  gap: 24px;
+  align-content: start;
+  gap: 20px;
   width: min(440px, 100%);
+  min-height: 520px;
   justify-self: end;
-  padding: 26px;
+  padding: 28px;
   border-radius: 22px;
   background: linear-gradient(145deg, rgba(14, 30, 48, 0.78), rgba(5, 17, 29, 0.62));
   border-color: rgba(196, 235, 255, 0.2);
@@ -4612,12 +4589,14 @@ select option {
 }
 
 .new-auth-form {
-  gap: 15px;
+  gap: 18px;
 }
 
-.auth-field-stack {
+.auth-step-fields {
   display: grid;
-  gap: 15px;
+  align-content: start;
+  gap: 16px;
+  min-height: 156px;
 }
 
 .auth-input {
@@ -4644,10 +4623,95 @@ select option {
 }
 
 .auth-submit {
+  flex: 1;
   min-height: 46px;
-  margin-top: 2px;
   border-radius: 14px;
   font-weight: 900;
+}
+
+.auth-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.auth-progress > span {
+  color: #8eb7c9;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.auth-progress-track {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(196, 235, 255, 0.12);
+}
+
+.auth-progress-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4dc5ff, #79f1dc);
+  transition: width var(--duration-slow) var(--ease-soft);
+}
+
+.auth-selected-email {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(196, 235, 255, 0.14);
+  border-radius: 13px;
+  color: #cfe6f3;
+  background: rgba(0, 10, 20, 0.26);
+}
+
+.auth-selected-email span {
+  overflow: hidden;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-selected-email button,
+.auth-back-button {
+  color: #8eeedc;
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid rgba(196, 235, 255, 0.14);
+  border-radius: 14px;
+}
+
+.auth-back-button:hover:not(:disabled),
+.auth-selected-email button:hover {
+  color: #ffffff;
+}
+
+.auth-privacy-note {
+  align-self: end;
+  margin: auto 0 0;
+  color: #789bad;
+  font-size: 0.74rem;
+  line-height: 1.55;
 }
 
 .admin-detail-modal header,
@@ -10046,11 +10110,9 @@ select option {
   p,
   small,
   label,
-  .auth-brand-english,
   .auth-brand-body,
   .auth-card-header p:not(.eyebrow),
   .auth-input,
-  .auth-switch,
   .field-hint,
   .map-diary-title-group p,
   .memory-stats p,
@@ -10856,12 +10918,7 @@ select option {
   }
 
   .auth-brand-panel h1 {
-    font-size: clamp(2.4rem, 14vw, 4rem);
-  }
-
-  .auth-brand-english {
-    max-width: 620px;
-    font-size: 1rem;
+    font-size: clamp(2.2rem, 10vw, 3.1rem);
   }
 
   .auth-brand-note {
@@ -10870,6 +10927,7 @@ select option {
 
   .auth-card {
     width: min(440px, 100%);
+    min-height: 0;
     justify-self: center;
     padding: 22px;
   }
@@ -13540,6 +13598,36 @@ select option {
 ) {
   background: linear-gradient(135deg, #05739f 0%, #009bd4 52%, #0bbf9f 100%) !important;
   box-shadow: 0 18px 38px rgba(0, 143, 199, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.38) !important;
+}
+
+:root[data-theme="bright"] .auth-selected-email {
+  color: var(--text-primary);
+  border-color: var(--border-soft);
+  background: rgba(242, 251, 255, 0.92);
+}
+
+:root[data-theme="bright"] .auth-selected-email button,
+:root[data-theme="bright"] .auth-back-button {
+  color: var(--accent);
+}
+
+:root[data-theme="bright"] .auth-back-button {
+  border-color: var(--border-soft);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+:root[data-theme="bright"] .auth-back-button:hover:not(:disabled),
+:root[data-theme="bright"] .auth-selected-email button:hover {
+  color: var(--accent-hover);
+}
+
+:root[data-theme="bright"] .auth-progress > span,
+:root[data-theme="bright"] .auth-privacy-note {
+  color: var(--text-muted);
+}
+
+:root[data-theme="bright"] .auth-progress-track {
+  background: rgba(0, 143, 199, 0.13);
 }
 
 .mood-intensity-field input.mood-intensity-slider,

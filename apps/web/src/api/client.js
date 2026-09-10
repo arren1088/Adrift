@@ -127,6 +127,12 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  checkEmail(email) {
+    return request('/auth/check-email', {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
+  },
   login(payload) {
     return request('/auth/login', {
       method: 'POST',

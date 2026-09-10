@@ -40,7 +40,7 @@ export default function LandingPage({ onNavigate }) {
         <nav aria-label="首頁導覽">
           <button className="motion-soft-press" type="button" onClick={() => onNavigate('/about')}>關於</button>
           <button className="motion-soft-press" type="button" onClick={() => onNavigate('/privacy')}>隱私</button>
-          <button className="landing-nav-login motion-soft-press" type="button" onClick={() => onNavigate('/login')}>登入</button>
+          <button className="landing-nav-login motion-soft-press" type="button" onClick={() => onNavigate('/auth')}>登入</button>
         </nav>
       </header>
 
@@ -59,7 +59,7 @@ export default function LandingPage({ onNavigate }) {
               Adrift 漂流足跡是一個以地圖為核心的生活記錄與城市記憶平台。使用者可以在去過的地點留下日記、照片與情緒，並與好友建立共同的城市記憶。
             </p>
             <div className="landing-actions">
-              <button className="primary-button motion-soft-press" type="button" onClick={() => onNavigate('/register')}>
+              <button className="primary-button motion-soft-press" type="button" onClick={() => onNavigate('/auth')}>
                 開始漂流
               </button>
               <a className="landing-secondary-action motion-soft-press" href="#how-it-works">
