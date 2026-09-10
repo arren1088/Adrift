@@ -28,7 +28,7 @@ export default function ToastViewport({ toast, onDismiss, className = '' }) {
           >
             <span className="app-toast-icon">{icons[type] || icons.info}</span>
             <p>{toast.message}</p>
-            <button type="button" onClick={onDismiss} aria-label="關閉提示">
+            <button className="motion-soft-press" type="button" onClick={onDismiss} aria-label="關閉提示">
               <X size={14} />
             </button>
           </motion.div>

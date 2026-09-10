@@ -11,6 +11,11 @@ export function prefersReducedMotion() {
 function stopAnimation(animation) {
   if (!animation) return;
 
+  if (typeof animation.revert === 'function') {
+    animation.revert();
+    return;
+  }
+
   if (typeof animation.pause === 'function') {
     animation.pause();
   }

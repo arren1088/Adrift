@@ -245,7 +245,7 @@ export default function DiaryModal({
             <p className="eyebrow">{isEditMode ? 'Edit memory' : 'New memory'}</p>
             <h2>{isEditMode ? '編輯日記' : '新增日記'}</h2>
           </div>
-          <button type="button" className="icon-button" onClick={onClose} aria-label="Close">
+          <button type="button" className="icon-button motion-soft-press" onClick={onClose} aria-label="Close">
             <X size={18} />
           </button>
         </header>
@@ -351,7 +351,7 @@ export default function DiaryModal({
             {!editDistanceAllowed && <strong>你目前距離原日記位置超過 1 公里，無法編輯</strong>}
             {!editTimeAllowed && <strong>日記發布超過 1 小時後無法再編輯</strong>}
             {remainingMs > 0 && remainingMs <= 5 * 60 * 1000 && <strong>可編輯時間即將結束</strong>}
-            <button className="chip-button inline-refresh" type="button" onClick={refreshCurrentLocation} disabled={refreshingLocation || loading}>
+            <button className="chip-button inline-refresh motion-soft-press" type="button" onClick={refreshCurrentLocation} disabled={refreshingLocation || loading}>
               {refreshingLocation ? <span className="button-spinner" /> : <RefreshCcw size={14} />}
               更新位置
             </button>
@@ -367,7 +367,7 @@ export default function DiaryModal({
 
         {error && <p className="form-error">{error}</p>}
 
-        <button className="primary-button" type="submit" disabled={loading || !canSubmitEdit}>
+        <button className="primary-button motion-soft-press" type="submit" disabled={loading || !canSubmitEdit}>
           {loading && <span className="button-spinner dark" />}
           {loading ? '保存中...' : isEditMode ? '儲存變更' : '保存日記'}
         </button>

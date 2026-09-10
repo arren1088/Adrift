@@ -33,14 +33,14 @@ export default function LandingPage({ onNavigate }) {
   return (
     <motion.section className="landing-page" {...pageFadeUp}>
       <header className="landing-nav">
-        <button className="landing-brand" type="button" onClick={() => onNavigate('/')}>
+        <button className="landing-brand motion-soft-press" type="button" onClick={() => onNavigate('/')}>
           <img src="/adrift-icon.png" alt="" aria-hidden="true" />
           <span>Adrift</span>
         </button>
         <nav aria-label="首頁導覽">
-          <button type="button" onClick={() => onNavigate('/about')}>關於</button>
-          <button type="button" onClick={() => onNavigate('/privacy')}>隱私</button>
-          <button className="landing-nav-login" type="button" onClick={() => onNavigate('/login')}>登入</button>
+          <button className="motion-soft-press" type="button" onClick={() => onNavigate('/about')}>關於</button>
+          <button className="motion-soft-press" type="button" onClick={() => onNavigate('/privacy')}>隱私</button>
+          <button className="landing-nav-login motion-soft-press" type="button" onClick={() => onNavigate('/login')}>登入</button>
         </nav>
       </header>
 
@@ -59,10 +59,10 @@ export default function LandingPage({ onNavigate }) {
               Adrift 漂流足跡是一個以地圖為核心的生活記錄與城市記憶平台。使用者可以在去過的地點留下日記、照片與情緒，並與好友建立共同的城市記憶。
             </p>
             <div className="landing-actions">
-              <button className="primary-button" type="button" onClick={() => onNavigate('/register')}>
+              <button className="primary-button motion-soft-press" type="button" onClick={() => onNavigate('/register')}>
                 開始漂流
               </button>
-              <a className="landing-secondary-action" href="#how-it-works">
+              <a className="landing-secondary-action motion-soft-press" href="#how-it-works">
                 看看它怎麼運作
               </a>
             </div>
@@ -122,7 +122,7 @@ export default function LandingPage({ onNavigate }) {
           </div>
           <div className="landing-feature-grid">
             {productHighlights.map((item, index) => (
-              <motion.article className="landing-feature-card" key={item.title} {...staggeredRevealMotion(index)}>
+              <motion.article className="landing-feature-card motion-card-hover" key={item.title} {...staggeredRevealMotion(index)}>
                 {item.icon}
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -169,7 +169,7 @@ export default function LandingPage({ onNavigate }) {
         </motion.section>
 
         <motion.section className="landing-two-column" {...revealOnViewMotion}>
-          <motion.article className="landing-callout-card" {...staggeredRevealMotion(0)}>
+          <motion.article className="landing-callout-card motion-card-hover" {...staggeredRevealMotion(0)}>
             <Clock3 size={24} />
             <h2>三個月前，你也來過這裡。</h2>
             <p>
@@ -177,7 +177,7 @@ export default function LandingPage({ onNavigate }) {
             </p>
           </motion.article>
 
-          <motion.article className="landing-callout-card" {...staggeredRevealMotion(1)}>
+          <motion.article className="landing-callout-card motion-card-hover" {...staggeredRevealMotion(1)}>
             <Brain size={24} />
             <h2>Adrift Intelligence 會替你整理散落的片段。</h2>
             <p>
@@ -187,7 +187,7 @@ export default function LandingPage({ onNavigate }) {
         </motion.section>
 
         <motion.section className="landing-two-column" {...revealOnViewMotion}>
-          <motion.article className="landing-callout-card" {...staggeredRevealMotion(0)}>
+          <motion.article className="landing-callout-card motion-card-hover" {...staggeredRevealMotion(0)}>
             <Route size={24} />
             <h2>一個人使用，也會慢慢長出價值。</h2>
             <p>
@@ -195,7 +195,7 @@ export default function LandingPage({ onNavigate }) {
             </p>
           </motion.article>
 
-          <motion.article className="landing-callout-card" {...staggeredRevealMotion(1)}>
+          <motion.article className="landing-callout-card motion-card-hover" {...staggeredRevealMotion(1)}>
             <ShieldCheck size={24} />
             <h2>你的足跡，由你決定誰能看見。</h2>
             <p>Adrift 讓你記錄地點，但不要求你暴露即時位置。</p>
@@ -219,7 +219,7 @@ export default function LandingPage({ onNavigate }) {
               用 2 分鐘了解漂流足跡如何把地點、日記、情緒與好友關係串在一起，讓城市成為能被回顧的生活記憶。
             </p>
           </div>
-          <button className="landing-about-link" type="button" onClick={() => onNavigate('/about')}>
+          <button className="landing-about-link motion-soft-press" type="button" onClick={() => onNavigate('/about')}>
             了解 Adrift 是什麼
             <ArrowRight size={17} />
           </button>

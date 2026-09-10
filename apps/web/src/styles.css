@@ -62,23 +62,23 @@
   --icon-xl: 42px;
   /* Shared motion scale */
   --duration-stagger: 40ms;
-  --duration-micro: 80ms;
-  --duration-quick: 150ms;
-  --duration-fast: 250ms;
-  --duration-medium: 350ms;
-  --duration-slow: 400ms;
-  --duration-very-slow: 500ms;
+  --duration-micro: 90ms;
+  --duration-quick: 140ms;
+  --duration-fast: 220ms;
+  --duration-medium: 300ms;
+  --duration-slow: 360ms;
+  --duration-very-slow: 420ms;
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: ease-in-out;
   --ease-out: ease-out;
   --ease-linear: linear;
-  --ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1);
-  --ease-bounce-strong: cubic-bezier(0.34, 3.85, 0.64, 1);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --distance-micro: 4px;
   --distance-small: 6px;
   --distance-base: 8px;
   --distance-medium: 12px;
-  --distance-large: 30px;
+  --distance-large: 16px;
   --scale-large: 0.96;
   --scale-medium: 0.97;
   --scale-small: 0.98;
@@ -101,8 +101,8 @@
   --motion-stars: 36s;
   --motion-line-draw: 1.45s;
   --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-drift: var(--ease-smooth-out);
+  --ease-soft: var(--ease-enter);
+  --ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
   color: #edf8ff;
   background: #02050d;
   font-family:
@@ -187,6 +187,38 @@
 .motion-shimmer {
   background-size: 220% 100%;
   animation: adriftMotionShimmer var(--motion-breathe) var(--ease-linear) infinite;
+}
+
+.motion-card-hover {
+  transition:
+    transform var(--duration-quick) var(--ease-enter),
+    border-color var(--duration-quick) var(--ease-enter),
+    background-color var(--duration-quick) var(--ease-enter),
+    box-shadow var(--duration-quick) var(--ease-enter);
+}
+
+.motion-card-hover:hover {
+  transform: translateY(-2px);
+}
+
+.motion-modal-overlay {
+  animation: adriftMotionFadeIn var(--duration-quick) var(--ease-enter) both;
+}
+
+.motion-modal-panel {
+  transform-origin: center;
+  animation: adriftMotionScaleSoft var(--duration-fast) var(--ease-enter) both;
+}
+
+.motion-dropdown {
+  transform-origin: top center;
+  animation: adriftMotionTooltipIn var(--duration-quick) var(--ease-enter) both;
+}
+
+.motion-line-draw {
+  stroke-dasharray: var(--line-length, 720);
+  stroke-dashoffset: var(--line-length, 720);
+  animation: adriftMotionLineDraw var(--motion-line-draw) var(--ease-enter) forwards;
 }
 
 @keyframes adriftMotionFadeIn {
@@ -290,6 +322,12 @@
 
   to {
     background-position: -120% 0;
+  }
+}
+
+@keyframes adriftMotionLineDraw {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 
@@ -5701,7 +5739,16 @@ select option {
   .selection-ripple,
   .life-map-glow-orb,
   .life-map-orbit-dot,
-  .loading-node {
+  .loading-node,
+  .presentation-map-visual,
+  .memory-drift-path,
+  .drifting-memory-dot,
+  .landing-memory-path,
+  .landing-memory-halo,
+  .memory-marker-aura,
+  .memory-marker-orbit::before,
+  .memory-stack-connector-layer line,
+  .memory-stack-expanded-item {
     animation: none !important;
   }
 }
@@ -6320,7 +6367,7 @@ select option {
   border-radius: 50%;
   background: #8effdc;
   box-shadow: 0 0 20px rgba(121, 241, 220, 0.65);
-  animation: lifeMapFloat var(--motion-breathe-quick) var(--ease-in-out) infinite;
+  animation: adriftMotionDriftFloat var(--motion-breathe-quick) var(--ease-in-out) infinite;
 }
 
 .dot-one {
@@ -7038,7 +7085,7 @@ select option {
   border-radius: 50%;
   background: #8effdc;
   box-shadow: 0 0 22px rgba(121, 241, 220, 0.7);
-  animation: presentationFloat var(--motion-breathe-slow) var(--ease-in-out) infinite;
+  animation: adriftMotionDriftFloat var(--motion-breathe-slow) var(--ease-in-out) infinite;
   will-change: transform;
 }
 
@@ -10751,32 +10798,12 @@ select option {
   }
 }
 
-@keyframes presentationFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 @keyframes presentationStars {
   from {
     background-position: 0 0, 0 0, 0 0;
   }
   to {
     background-position: 80px 80px, 80px 80px, 72px 72px;
-  }
-}
-
-@keyframes lifeMapFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
   }
 }
 

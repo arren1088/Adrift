@@ -41,7 +41,7 @@ export default function FeedPage({ diaries = [], user, onOpenDiary }) {
         {feedFilters.map((option) => (
           <button
             key={option.value}
-            className={filter === option.value ? 'active' : ''}
+            className={`motion-soft-press ${filter === option.value ? 'active' : ''}`}
             type="button"
             onClick={() => setFilter(option.value)}
           >
@@ -55,7 +55,7 @@ export default function FeedPage({ diaries = [], user, onOpenDiary }) {
           feedItems.map((diary, index) => (
             <motion.article
               key={diary._id}
-              className="feed-card"
+              className="feed-card motion-card-hover"
               onClick={() => onOpenDiary?.(diary)}
               role="button"
               tabIndex={0}
@@ -96,7 +96,7 @@ export default function FeedPage({ diaries = [], user, onOpenDiary }) {
             </motion.article>
           ))
         ) : (
-          <div className="feed-empty">
+          <div className="feed-empty motion-fade-up">
             <Radio size={20} />
             <h3>附近還很安靜</h3>
             <p>先把這裡變成你的記憶地圖。新增日記或加入好友後，公開與好友記憶會慢慢出現在這裡。</p>

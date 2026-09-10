@@ -1,14 +1,15 @@
 const smoothOut = [0.22, 1, 0.36, 1];
 const softOut = [0.16, 1, 0.3, 1];
+const exitEase = [0.4, 0, 1, 1];
 
 export const motionMs = {
   stagger: 40,
-  micro: 80,
-  quick: 150,
-  fast: 250,
-  medium: 350,
-  slow: 400,
-  verySlow: 500
+  micro: 90,
+  quick: 140,
+  fast: 220,
+  medium: 300,
+  slow: 360,
+  verySlow: 420
 };
 
 export const motionTokens = {
@@ -27,7 +28,7 @@ export const motionTokens = {
     small: 6,
     base: 8,
     medium: 12,
-    large: 30
+    large: 16
   },
   scale: {
     large: 0.96,
@@ -38,18 +39,19 @@ export const motionTokens = {
   ease: {
     smoothOut,
     softOut,
+    exitEase,
     linear: 'linear',
     inOut: 'easeInOut'
   }
 };
 
-export const pageTransition = { duration: motionTokens.duration.fast, ease: smoothOut };
-export const panelTransition = { duration: motionTokens.duration.slow, ease: smoothOut };
-export const modalTransition = { duration: motionTokens.duration.fast, ease: smoothOut };
-export const dropdownTransition = { duration: motionTokens.duration.fast, ease: smoothOut };
-export const toastTransition = { duration: motionTokens.duration.medium, ease: smoothOut };
-export const listItemTransition = { duration: motionTokens.duration.verySlow, ease: smoothOut };
-export const accordionTransition = { duration: motionTokens.duration.slow, ease: smoothOut };
+export const pageTransition = { duration: motionTokens.duration.fast, ease: softOut };
+export const panelTransition = { duration: motionTokens.duration.slow, ease: softOut };
+export const modalTransition = { duration: motionTokens.duration.fast, ease: softOut };
+export const dropdownTransition = { duration: motionTokens.duration.quick, ease: softOut };
+export const toastTransition = { duration: motionTokens.duration.medium, ease: softOut };
+export const listItemTransition = { duration: motionTokens.duration.verySlow, ease: softOut };
+export const accordionTransition = { duration: motionTokens.duration.slow, ease: softOut };
 
 export const pageFadeUp = {
   initial: { opacity: 0, y: motionTokens.distance.base },
@@ -76,7 +78,7 @@ export const modalBackdropMotion = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
-  transition: { duration: motionTokens.duration.quick, ease: smoothOut }
+  transition: { duration: motionTokens.duration.quick, ease: softOut }
 };
 
 export const modalPopMotion = {
@@ -96,9 +98,9 @@ export function dropdownMotion(openUp = false) {
 }
 
 export const toastMotion = {
-  initial: { opacity: 0, y: -motionTokens.distance.base, scale: motionTokens.scale.medium },
+  initial: { opacity: 0, y: -motionTokens.distance.small, scale: motionTokens.scale.medium },
   animate: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, y: -motionTokens.distance.base, scale: motionTokens.scale.small },
+  exit: { opacity: 0, y: -motionTokens.distance.small, scale: motionTokens.scale.small },
   transition: toastTransition
 };
 

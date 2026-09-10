@@ -100,7 +100,7 @@ export default function Select({
       {label && <span className="ui-select-label">{label}</span>}
       <button
         ref={triggerRef}
-        className={`ui-select-trigger ${size} ${open ? 'open' : ''} ${error ? 'invalid' : ''}`}
+        className={`ui-select-trigger motion-soft-press ${size} ${open ? 'open' : ''} ${error ? 'invalid' : ''}`}
         type="button"
         onClick={() => {
           if (disabled) return;
@@ -138,7 +138,7 @@ export default function Select({
               {normalizedOptions.map((option) => (
                 <button
                   key={option.value}
-                  className={option.value === value ? 'active' : ''}
+                  className={`motion-soft-press ${option.value === value ? 'active' : ''}`}
                   type="button"
                   onClick={() => selectOption(option.value)}
                   role="option"

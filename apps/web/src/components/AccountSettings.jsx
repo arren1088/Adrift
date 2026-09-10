@@ -404,7 +404,7 @@ export default function AccountSettings({
             <h1 className="settings-page-title">帳號設定</h1>
             <p className="settings-page-subtitle">管理你的個人資料、頭貼與帳號安全</p>
           </div>
-          <button className="chip-button" type="button" onClick={onBack}>
+          <button className="chip-button motion-soft-press" type="button" onClick={onBack}>
             返回地圖
           </button>
         </header>
@@ -426,7 +426,7 @@ export default function AccountSettings({
                 return (
                   <button
                     key={section.id}
-                    className={activeSection === section.id ? 'active' : ''}
+                    className={`motion-soft-press ${activeSection === section.id ? 'active' : ''}`}
                     type="button"
                     onClick={() => setActiveSection(section.id)}
                   >
@@ -463,13 +463,13 @@ export default function AccountSettings({
                     accept="image/jpeg,image/png,image/webp"
                     onChange={handleAvatarChange}
                   />
-                  <button className="secondary-button" type="button" onClick={() => avatarInputRef.current?.click()}>
+                  <button className="secondary-button motion-soft-press" type="button" onClick={() => avatarInputRef.current?.click()}>
                     <Upload size={16} />
                     上傳新頭貼
                   </button>
                   {user?.avatar && (
                     <button
-                      className="ghost-button"
+                      className="ghost-button motion-soft-press"
                       type="button"
                       onClick={removeAvatar}
                       disabled={loadingAction === 'remove-avatar'}
@@ -697,7 +697,7 @@ export default function AccountSettings({
                   />
                   {shouldShow('confirmText', 'delete') && <span className="field-error">{errors.confirmText}</span>}
                 </label>
-                <button className="danger-button" disabled={loadingAction === 'delete'}>
+                <button className="danger-button motion-soft-press" disabled={loadingAction === 'delete'}>
                   <Trash2 size={16} />
                   刪除帳號
                 </button>
@@ -716,7 +716,7 @@ export default function AccountSettings({
                   <h3>調整頭貼</h3>
                   <p>拖曳圖片調整位置，使用滑桿調整縮放。</p>
                 </div>
-                <button className="icon-button" type="button" onClick={closeAvatarCrop} aria-label="關閉頭貼調整">
+                <button className="icon-button motion-soft-press" type="button" onClick={closeAvatarCrop} aria-label="關閉頭貼調整">
                   <X size={18} />
                 </button>
               </header>
@@ -772,10 +772,10 @@ export default function AccountSettings({
               {avatarError && <span className="field-error">{avatarError}</span>}
 
               <div className="modal-actions">
-                <button className="secondary-button" type="button" onClick={closeAvatarCrop}>
+                <button className="secondary-button motion-soft-press" type="button" onClick={closeAvatarCrop}>
                   取消
                 </button>
-                <button className="primary-button" type="button" onClick={submitCroppedAvatar} disabled={loadingAction === 'avatar'}>
+                <button className="primary-button motion-soft-press" type="button" onClick={submitCroppedAvatar} disabled={loadingAction === 'avatar'}>
                   {loadingAction === 'avatar' && <span className="button-spinner dark" />}
                   儲存頭貼
                 </button>
@@ -795,10 +795,10 @@ export default function AccountSettings({
               <h3>刪除帳號？</h3>
               <p>刪除後，你的個人資料、好友關係與日記資料可能無法復原。</p>
               <div className="modal-actions">
-                <button className="secondary-button" type="button" onClick={() => setDeleteConfirmOpen(false)}>
+                <button className="secondary-button motion-soft-press" type="button" onClick={() => setDeleteConfirmOpen(false)}>
                   取消
                 </button>
-                <button className="danger-button" type="button" onClick={confirmDeleteAccount} disabled={loadingAction === 'delete'}>
+                <button className="danger-button motion-soft-press" type="button" onClick={confirmDeleteAccount} disabled={loadingAction === 'delete'}>
                   {loadingAction === 'delete' && <span className="button-spinner" />}
                   確認刪除
                 </button>
@@ -815,7 +815,7 @@ function SettingsCard({ id, icon, title, description, visible, danger = false, c
   return (
     <motion.section
       id={`settings-${id}`}
-      className={`settings-card glass ${visible ? 'visible' : 'hidden'} ${danger ? 'danger-zone' : ''}`}
+      className={`settings-card glass motion-card-hover ${visible ? 'visible' : 'hidden'} ${danger ? 'danger-zone' : ''}`}
       {...pageFadeUp}
     >
       <header className="settings-card-header">
@@ -834,13 +834,13 @@ function SettingsCard({ id, icon, title, description, visible, danger = false, c
 
 function SettingsRow({ label, value, actionLabel, actionIcon, onAction, actionDisabled, isEditing, children }) {
   return (
-    <div className={`settings-row ${isEditing ? 'is-editing' : ''}`}>
+    <div className={`settings-row motion-card-hover ${isEditing ? 'is-editing' : ''}`}>
       <span className="settings-row-label">{label}</span>
       <div className="settings-row-value">
         {isEditing ? children : <strong title={typeof value === 'string' ? value : undefined}>{value}</strong>}
       </div>
       {!isEditing && actionLabel && (
-        <button className="settings-row-action" type="button" onClick={onAction} disabled={actionDisabled}>
+        <button className="settings-row-action motion-soft-press" type="button" onClick={onAction} disabled={actionDisabled}>
           {actionIcon}
           {actionLabel}
         </button>
@@ -852,10 +852,10 @@ function SettingsRow({ label, value, actionLabel, actionIcon, onAction, actionDi
 function InlineActions({ loading, disabled, onCancel, saveLabel = '儲存' }) {
   return (
     <div className="settings-inline-actions">
-      <button className="ghost-button" type="button" onClick={onCancel}>
+      <button className="ghost-button motion-soft-press" type="button" onClick={onCancel}>
         取消
       </button>
-      <button className="primary-button" type="submit" disabled={disabled}>
+      <button className="primary-button motion-soft-press" type="submit" disabled={disabled}>
         {loading && <span className="button-spinner dark" />}
         {saveLabel}
       </button>
@@ -874,7 +874,7 @@ function PasswordInput({ visible, onToggle, value, onChange, onBlur, placeholder
         placeholder={placeholder}
         aria-invalid={invalid}
       />
-      <button type="button" onClick={onToggle} aria-label={visible ? '隱藏密碼' : '顯示密碼'}>
+      <button className="motion-soft-press" type="button" onClick={onToggle} aria-label={visible ? '隱藏密碼' : '顯示密碼'}>
         {visible ? <EyeOff size={16} /> : <Eye size={16} />}
       </button>
     </span>

@@ -110,7 +110,7 @@ export default function LifeMapAI({ state, onStateChange, onBack }) {
   return (
     <motion.main className="life-map-panel glass" {...pageFadeUp}>
       <section className="life-map-hero">
-        <button className="icon-button life-map-back" type="button" onClick={onBack} aria-label="返回地圖">
+        <button className="icon-button life-map-back motion-soft-press" type="button" onClick={onBack} aria-label="返回地圖">
           <ArrowLeft size={17} />
         </button>
 
@@ -121,11 +121,11 @@ export default function LifeMapAI({ state, onStateChange, onBack }) {
           <span>根據你的日記、心情與位置，整理出專屬於你的生活洞察。</span>
 
           <div className="life-map-hero-actions">
-            <button className="life-map-cta" type="button" onClick={generateInsight} disabled={isLoading}>
+            <button className="life-map-cta motion-soft-press" type="button" onClick={generateInsight} disabled={isLoading}>
               {isLoading ? <span className="button-spinner dark" /> : <Sparkles size={17} />}
               {hasResult ? '重新產生洞察' : '產生智慧洞察'}
             </button>
-            <button className="life-map-secondary-action" type="button" onClick={onBack}>
+            <button className="life-map-secondary-action motion-soft-press" type="button" onClick={onBack}>
               回到地圖
             </button>
           </div>
@@ -146,7 +146,7 @@ export default function LifeMapAI({ state, onStateChange, onBack }) {
           {status === 'idle' && (
             <motion.section className="life-map-prep-grid" key="idle" {...fadeUpMotion}>
               {previewFeatures.map((feature, index) => (
-                <motion.article className="life-map-feature-card" key={feature.title} {...listItemMotion(index)}>
+                <motion.article className="life-map-feature-card motion-card-hover" key={feature.title} {...listItemMotion(index)}>
                   <div className="life-map-feature-icon">{feature.icon}</div>
                   <h3>{feature.title}</h3>
                   <p>{feature.copy}</p>
@@ -177,7 +177,7 @@ export default function LifeMapAI({ state, onStateChange, onBack }) {
               <Target size={22} />
               <h2>資料還不夠完整</h2>
               <p>至少需要 {dataWarmup?.required || 3} 篇日記，才能產生 Adrift Intelligence 洞察。目前已有 {dataWarmup?.current || 0} 篇。</p>
-              <button className="life-map-cta compact" type="button" onClick={onBack}>
+              <button className="life-map-cta compact motion-soft-press" type="button" onClick={onBack}>
                 回到地圖新增日記
               </button>
             </motion.section>
@@ -188,7 +188,7 @@ export default function LifeMapAI({ state, onStateChange, onBack }) {
               <Brain size={22} />
               <h2>Adrift Intelligence 暫時無法使用</h2>
               <p>請稍後再試一次。</p>
-              <button className="life-map-cta compact" type="button" onClick={generateInsight}>
+              <button className="life-map-cta compact motion-soft-press" type="button" onClick={generateInsight}>
                 <RefreshCw size={16} />
                 重新嘗試
               </button>
@@ -215,10 +215,10 @@ function LifeMapDashboard({ insight, onRegenerate }) {
 
   return (
     <motion.section className="life-map-dashboard" {...fadeUpMotion}>
-      <article className="life-map-summary-card">
+      <article className="life-map-summary-card motion-card-hover">
         <div className="life-map-card-heading">
           <span><Sparkles size={17} /> 整體摘要</span>
-          <button className="life-map-secondary-action compact" type="button" onClick={onRegenerate}>
+          <button className="life-map-secondary-action compact motion-soft-press" type="button" onClick={onRegenerate}>
             <RefreshCw size={15} />
             重新產生洞察
           </button>
@@ -227,7 +227,7 @@ function LifeMapDashboard({ insight, onRegenerate }) {
       </article>
 
       <div className="life-map-dashboard-grid">
-        <article className="life-map-insight-card mood">
+        <article className="life-map-insight-card mood motion-card-hover">
           <div className="life-map-card-heading">
             <span><TrendingUp size={17} /> 情緒趨勢</span>
           </div>
@@ -241,7 +241,7 @@ function LifeMapDashboard({ insight, onRegenerate }) {
           </div>
         </article>
 
-        <article className="life-map-insight-card suggestion">
+        <article className="life-map-insight-card suggestion motion-card-hover">
           <div className="life-map-card-heading">
             <span><Lightbulb size={17} /> 智慧建議</span>
           </div>
@@ -262,7 +262,7 @@ function LifeMapDashboard({ insight, onRegenerate }) {
         <div className="life-map-location-grid">
           {safeInsight.locationInsights.length > 0 ? (
             safeInsight.locationInsights.map((item, index) => (
-              <motion.article className="life-map-location-card" key={`${item.place}-${index}`} {...listItemMotion(index)}>
+              <motion.article className="life-map-location-card motion-card-hover" key={`${item.place}-${index}`} {...listItemMotion(index)}>
                 <strong>{normalizeTaiwanPlaceName(item.place) || '未命名地點'}</strong>
                 <span>{normalizeTaiwanPlaceName(item.dominantMood) || '未分類心情'}</span>
                 <p>{normalizeTaiwanPlaceName(item.insight) || '這個地點還需要更多日記，才能看出更清楚的模式。'}</p>
