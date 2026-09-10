@@ -970,7 +970,7 @@ function FriendActivityPanel({ activity, onOpenDiary }) {
           <div className="friends-empty-panel compact">
             <Activity size={18} />
             <strong>目前還沒有好友動態</strong>
-            <p>加入好友或新增日記後，好友動態會更豐富。</p>
+            <p>可以先累積自己的城市記憶，之後再和好友分享想讓對方看見的足跡。</p>
           </div>
         )}
       </div>

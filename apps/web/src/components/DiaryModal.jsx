@@ -1,6 +1,6 @@
 ﻿import { motion } from 'framer-motion';
-import { ImagePlus, LocateFixed, RefreshCcw, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ImagePlus, LocateFixed, Mic, RefreshCcw, Square, Trash2, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { MOOD_OPTIONS, VISIBILITY_OPTIONS } from '../constants/app.js';
 import { modalBackdropMotion, modalPopMotion } from '../constants/animations.js';
 import { getDistanceInMeters } from '../utils/distance.js';
@@ -48,6 +48,8 @@ const visibilitySelectOptions = VISIBILITY_OPTIONS.map((value) => ({
 }));
 
 const EDIT_DISTANCE_LIMIT_METERS = 1000;
+const DIARY_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+const DIARY_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 export default function DiaryModal({
   location,
@@ -72,6 +74,12 @@ export default function DiaryModal({
   const [placeName, setPlaceName] = useState('');
   const [timeNow, setTimeNow] = useState(Date.now());
   const [refreshingLocation, setRefreshingLocation] = useState(false);
+  const [imagePreview, setImagePreview] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [speechStatus, setSpeechStatus] = useState('idle');
+  const [speechMessage, setSpeechMessage] = useState('');
+  const imageInputRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   const diaryCoordinates = diary?.location?.coordinates || [];
   const diaryLng = Number.isFinite(diaryCoordinates[0]) ? diaryCoordinates[0] : diary?.location?.lng;
@@ -110,6 +118,28 @@ export default function DiaryModal({
     const timer = window.setInterval(() => setTimeNow(Date.now()), 30000);
     return () => window.clearInterval(timer);
   }, [isEditMode]);
+
+  useEffect(() => {
+    if (!form.image) {
+      setImagePreview('');
+      return undefined;
+    }
+
+    const previewUrl = URL.createObjectURL(form.image);
+    setImagePreview(previewUrl);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [form.image]);
+
+  useEffect(() => {
+    return () => {
+      const recognition = recognitionRef.current;
+      if (!recognition) return;
+      recognition.onend = null;
+      recognition.onerror = null;
+      recognition.onresult = null;
+      recognition.abort();
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -158,7 +188,99 @@ export default function DiaryModal({
     if (titleError) errors.title = titleError;
     if (textError) errors.text = textError;
     setFieldErrors(errors);
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).length === 0 && !imageError;
+  }
+
+  function selectImage(event) {
+    const file = event.target.files?.[0] || null;
+    setImageError('');
+
+    if (!file) {
+      updateField('image', null);
+      return;
+    }
+
+    if (!DIARY_IMAGE_TYPES.has(file.type)) {
+      setImageError('圖片格式不支援，請上傳 JPG、PNG 或 WebP。');
+      updateField('image', null);
+      event.target.value = '';
+      return;
+    }
+
+    if (file.size > DIARY_IMAGE_MAX_BYTES) {
+      setImageError('圖片大小不可超過 5MB。');
+      updateField('image', null);
+      event.target.value = '';
+      return;
+    }
+
+    updateField('image', file);
+  }
+
+  function removeImage() {
+    updateField('image', null);
+    setImageError('');
+    if (imageInputRef.current) imageInputRef.current.value = '';
+  }
+
+  function toggleSpeechInput() {
+    if (recognitionRef.current) {
+      setSpeechStatus('processing');
+      setSpeechMessage('辨識中...');
+      recognitionRef.current.stop();
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setSpeechStatus('error');
+      setSpeechMessage('目前瀏覽器不支援語音輸入，請改用文字輸入。');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'zh-TW';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.onstart = () => {
+      setSpeechStatus('listening');
+      setSpeechMessage('正在聆聽...');
+    };
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0]?.transcript || '')
+        .join('')
+        .trim();
+
+      if (transcript) {
+        setForm((current) => ({
+          ...current,
+          text: `${current.text}${current.text.trim() ? '\n' : ''}${transcript}`
+        }));
+        setFieldErrors((current) => ({ ...current, text: '' }));
+        setSpeechStatus('success');
+        setSpeechMessage('已加入日記內容');
+      }
+    };
+    recognition.onerror = (event) => {
+      const permissionDenied = event.error === 'not-allowed' || event.error === 'service-not-allowed';
+      setSpeechStatus('error');
+      setSpeechMessage(permissionDenied ? '請允許麥克風權限後再試一次。' : '辨識失敗，請再試一次。');
+    };
+    recognition.onend = () => {
+      recognitionRef.current = null;
+      setSpeechStatus((current) => (current === 'listening' || current === 'processing' ? 'idle' : current));
+      setSpeechMessage((current) => (current === '正在聆聽...' || current === '辨識中...' ? '' : current));
+    };
+
+    recognitionRef.current = recognition;
+    try {
+      recognition.start();
+    } catch {
+      recognitionRef.current = null;
+      setSpeechStatus('error');
+      setSpeechMessage('辨識失敗，請再試一次。');
+    }
   }
 
   async function submit(event) {
@@ -215,6 +337,8 @@ export default function DiaryModal({
         visibility: 'public',
         image: null
       });
+      setImageError('');
+      if (imageInputRef.current) imageInputRef.current.value = '';
     } catch {
       // The parent renders API errors inside the modal.
     }
@@ -264,9 +388,21 @@ export default function DiaryModal({
           {fieldErrors.title && <span className="field-error">{fieldErrors.title}</span>}
         </label>
 
-        <label>
-          文字
+        <div className="diary-content-field">
+          <div className="diary-field-heading">
+            <label htmlFor="diary-content">日記內容</label>
+            <button
+              className={`voice-input-button motion-soft-press ${speechStatus === 'listening' ? 'is-listening' : ''}`}
+              type="button"
+              onClick={toggleSpeechInput}
+              aria-pressed={speechStatus === 'listening'}
+            >
+              {speechStatus === 'listening' ? <Square size={15} /> : <Mic size={16} />}
+              {speechStatus === 'listening' ? '停止' : '語音輸入'}
+            </button>
+          </div>
           <textarea
+            id="diary-content"
             value={form.text}
             onChange={(event) => updateField('text', event.target.value)}
             placeholder="把此刻的潮汐留下來..."
@@ -274,8 +410,9 @@ export default function DiaryModal({
             aria-invalid={Boolean(fieldErrors.text)}
             required
           />
+          {speechMessage && <span className={`speech-status ${speechStatus}`} aria-live="polite">{speechMessage}</span>}
           {fieldErrors.text && <span className="field-error">{fieldErrors.text}</span>}
-        </label>
+        </div>
 
         <div className="field-grid">
           <Select
@@ -312,26 +449,41 @@ export default function DiaryModal({
 
           {!isEditMode && (
             <label className="file-input">
-              圖片
+              照片（選填）
               <span>
                 <ImagePlus size={16} />
-                {form.image ? form.image.name : '選擇圖片'}
+                {form.image ? form.image.name : '拍照或選擇照片'}
               </span>
               <input
+                ref={imageInputRef}
                 type="file"
-                accept="image/*"
-                onChange={(event) => updateField('image', event.target.files?.[0] || null)}
+                accept="image/jpeg,image/png,image/webp"
+                onChange={selectImage}
               />
             </label>
           )}
         </div>
+
+        {!isEditMode && imagePreview && (
+          <div className="diary-image-preview motion-fade-in">
+            <img src={imagePreview} alt="日記照片預覽" />
+            <div>
+              <strong>{form.image?.name}</strong>
+              <span>{formatFileSize(form.image?.size)}</span>
+            </div>
+            <button className="icon-button motion-soft-press" type="button" onClick={removeImage} aria-label="移除照片">
+              <Trash2 size={16} />
+            </button>
+          </div>
+        )}
+        {imageError && <span className="field-error">{imageError}</span>}
 
         <div className="visibility-privacy-note">
           <strong>你的足跡，由你決定誰能看見。</strong>
           <p>
             公開：其他使用者可以在地圖上看到這篇日記。好友：只有好友可以看到。私人：只有你自己可以看到。
           </p>
-          <span>更多位置隱私控制即將推出。</span>
+          <span>不是每一段記憶都需要公開，你可以決定誰能看見你的足跡。</span>
         </div>
 
         {isEditMode ? (
@@ -389,4 +541,9 @@ function formatRemainingTime(ms) {
 function formatDistance(value) {
   if (value >= 1000) return `${(value / 1000).toFixed(1)} 公里`;
   return `${Math.round(value)} 公尺`;
+}
+
+function formatFileSize(bytes) {
+  if (!Number.isFinite(bytes)) return '';
+  return `${(bytes / 1024 / 1024).toFixed(bytes >= 1024 * 1024 ? 1 : 2)} MB`;
 }

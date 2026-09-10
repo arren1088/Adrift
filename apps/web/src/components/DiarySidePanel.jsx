@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock3, Edit3, ImageIcon, Lock, MapPin, Trash2, Users, Waves, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getImageUrl } from '../api/client.js';
 import { fadeUpMotion, panelSlideLeft } from '../constants/animations.js';
 import { FALLBACK_DIARY_TITLE, MOOD_LABELS, REACTION_OPTIONS } from '../constants/app.js';
 import { getDistanceInMeters } from '../utils/distance.js';
 import { normalizeTaiwanPlaceName } from '../utils/locationFormatter.js';
 import { formatCoordinates, resolvePlaceName } from '../utils/placeName.js';
+import DiaryImage from './DiaryImage.jsx';
 import UserAvatar from './UserAvatar.jsx';
 
 const visibilityIcons = {
@@ -133,7 +133,7 @@ export default function DiarySidePanel({ diary, currentUser, currentLocation, on
             </header>
 
             {diary.imageUrl ? (
-              <img className="diary-side-image" src={getImageUrl(diary.imageUrl)} alt="" />
+              <DiaryImage className="diary-side-image" src={diary.imageUrl} alt={`日記「${titleText}」的照片`} />
             ) : (
               <div className="diary-side-image empty">
                 <ImageIcon size={18} />

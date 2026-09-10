@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FALLBACK_DIARY_TITLE, REACTION_TYPES, VISIBILITIES } from '../constants/app.js';
@@ -19,12 +20,16 @@ const diaryEventClients = new Map();
 const DIARY_EDIT_WINDOW_MS = 60 * 60 * 1000;
 const DIARY_EDIT_DISTANCE_LIMIT_METERS = 1000;
 const MOOD_TYPES = ['calm', 'joy', 'sad', 'wonder', 'anxious', 'confused', 'nostalgic', 'other'];
+const DIARY_IMAGE_EXTENSIONS = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png',
+  'image/webp': '.webp'
+};
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '..', 'uploads'),
   filename: (_req, file, callback) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    callback(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
+    callback(null, `${Date.now()}-${randomUUID()}${DIARY_IMAGE_EXTENSIONS[file.mimetype]}`);
   }
 });
 
@@ -32,8 +37,10 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (_req, file, callback) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return callback(new Error('只允許上傳圖片'));
+    if (!DIARY_IMAGE_EXTENSIONS[file.mimetype]) {
+      const error = new Error('圖片格式不支援，請上傳 JPG、PNG 或 WebP。');
+      error.statusCode = 400;
+      return callback(error);
     }
 
     callback(null, true);

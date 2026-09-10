@@ -1253,6 +1253,7 @@ export default function App() {
             diaries={diaries}
             user={user}
             onOpenDiary={openDiaryFromFeed}
+            onNewDiary={openNewDiary}
           />
         ) : user && isAiPage ? (
           <LifeMapAI
@@ -1298,7 +1299,7 @@ export default function App() {
               {stats.total} 則記憶
             </span>
             <span>{stats.mine} 我的</span>
-            {mapMode === 'explore' && !diaryLoading && diaries.length === 0 && <strong>附近還沒有公開日記</strong>}
+            {mapMode === 'explore' && !diaryLoading && diaries.length === 0 && <strong>附近還很安靜，先留下自己的記憶。</strong>}
             {locating && <strong>正在取得位置...</strong>}
             {userLocation.message && <strong className={userLocation.accuracyType === 'approximate' ? 'location-approximate' : 'location-success'}>{userLocation.message}</strong>}
             {userLocation.accuracyType === 'approximate' && !userLocation.message && <strong className="location-approximate">目前為大略位置</strong>}

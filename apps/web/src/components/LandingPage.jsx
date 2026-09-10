@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Brain, Clock3, Coffee, Compass, LockKeyhole, MapPinned, Route, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, Brain, Camera, Clock3, Coffee, Compass, LockKeyhole, MapPinned, Route, ShieldCheck, Sparkles, Users } from 'lucide-react';
 import { pageFadeUp, revealOnViewMotion, staggeredRevealMotion } from '../constants/animations.js';
 
 const productHighlights = [
@@ -56,7 +56,7 @@ export default function LandingPage({ onNavigate }) {
               記錄地點、心情與故事，讓生活軌跡不只是打卡，而是可以被回顧的記憶地圖。
             </p>
             <p className="landing-seo-definition">
-              Adrift 漂流足跡是一個以地圖為核心的生活記錄與城市記憶平台。使用者可以在去過的地點留下日記、照片與情緒，並與好友建立共同的城市記憶。
+              Adrift 漂流足跡是地圖日記與城市記憶平台。把生活記憶留在真實發生的地點，日記累積後，地圖會慢慢變成屬於你的城市記憶。
             </p>
             <div className="landing-actions">
               <button className="primary-button motion-soft-press" type="button" onClick={() => onNavigate('/auth')}>
@@ -100,7 +100,7 @@ export default function LandingPage({ onNavigate }) {
             <p className="eyebrow">How It Works</p>
             <h2>一段記憶，不只是一則貼文。</h2>
             <p>
-              今天你去了民生社區的一間咖啡店，和朋友聊了很久，也把當下的心情留在地圖上。一年後再次經過這裡，Adrift 會把這段記憶重新帶回來，而不是讓它沉到動態牆深處。
+              今天你去了學校附近的咖啡店，用語音快速說下當時的想法，再留下一張照片。三個月後再次經過這裡，Adrift 會把這段記憶重新帶回來。
             </p>
           </div>
           <article className="landing-story-card" aria-label="Adrift 使用情境範例">
@@ -108,9 +108,10 @@ export default function LandingPage({ onNavigate }) {
               <Coffee size={22} />
             </div>
             <div className="landing-story-card-main">
-              <span>民生社區</span>
-              <strong>原本只想坐一下，結果聊了三個小時。</strong>
-              <p>和某個朋友聊天 · 今天心情很好 · 一年後再次經過時重新遇見</p>
+              <span>靜宜大學附近</span>
+              <strong>原本只想坐一下，結果整理完很多想法。</strong>
+              <p>心情：平靜 · 三個月後再次經過時重新遇見</p>
+              <span className="landing-story-photo"><Camera size={14} /> 留下一張照片</span>
             </div>
           </article>
         </motion.section>

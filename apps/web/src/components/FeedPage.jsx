@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { Heart, MessageCircle, Radio, Users, Waves } from 'lucide-react';
+import { Heart, MessageCircle, Plus, Radio, Users, Waves } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { fadeUpMotion, listItemMotion } from '../constants/animations.js';
 import { MOOD_LABELS } from '../constants/app.js';
 import { formatDiaryTime } from '../utils/diaryTime.js';
+import DiaryImage from './DiaryImage.jsx';
 import UserAvatar from './UserAvatar.jsx';
 
 const feedFilters = [
@@ -12,7 +13,7 @@ const feedFilters = [
   { value: 'public', label: '公開' }
 ];
 
-export default function FeedPage({ diaries = [], user, onOpenDiary }) {
+export default function FeedPage({ diaries = [], user, onOpenDiary, onNewDiary }) {
   const [filter, setFilter] = useState('all');
   const timeNow = Date.now();
 
@@ -77,6 +78,13 @@ export default function FeedPage({ diaries = [], user, onOpenDiary }) {
               </div>
 
               <h3>{diary.title || '（未命名日記）'}</h3>
+              {diary.imageUrl && (
+                <DiaryImage
+                  className="feed-card-image"
+                  src={diary.imageUrl}
+                  alt={`日記「${diary.title || '未命名日記'}」的照片`}
+                />
+              )}
               <p>{summarizeDiary(diary.text || diary.content)}</p>
 
               <footer>
@@ -99,7 +107,11 @@ export default function FeedPage({ diaries = [], user, onOpenDiary }) {
           <div className="feed-empty motion-fade-up">
             <Radio size={20} />
             <h3>附近還很安靜</h3>
-            <p>先把這裡變成你的記憶地圖。新增日記或加入好友後，公開與好友記憶會慢慢出現在這裡。</p>
+            <p>先把這裡變成你的記憶地圖。即使只有自己可見，也能在未來回顧今天的生活片段。</p>
+            <button className="chip-button motion-soft-press" type="button" onClick={onNewDiary}>
+              <Plus size={15} />
+              留下第一篇日記
+            </button>
           </div>
         )}
       </div>

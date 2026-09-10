@@ -92,7 +92,7 @@ function AboutContent({ onNavigate }) {
           <p className="eyebrow">City Memory System</p>
           <h2>漂流足跡不是單純在地圖上發東西。</h2>
           <p>
-            Adrift 的核心是讓「地點 → 當下發生的事情 → 情緒 → 人」逐漸累積。幾個月、幾年後，這張地圖會慢慢變成你的生活，讓每個地方都有能被重新遇見的故事。
+            Adrift 的核心價值，是讓使用者把生活記憶留在真實發生的地點。幾個月或幾年後，地圖不再只是地圖，而會慢慢變成屬於你的城市記憶。
           </p>
         </div>
       </section>
@@ -150,7 +150,7 @@ function AboutContent({ onNavigate }) {
       <section className="public-info-section">
         <div className="public-info-section-heading">
           <p className="eyebrow">Difference</p>
-          <h2>Google Maps 記得路線，Instagram 記得照片。Adrift 記得你在某個地方的心情與故事。</h2>
+          <h2>Google Maps 記得你去過哪裡，IG 記得你拍過什麼。Adrift 記得你在某個地方發生了什麼、感覺如何、和誰有關。</h2>
           <p>
             Adrift 不是另一個普通地圖或社群網站。它的核心，是把「地點 × 記憶 × 情緒 × 人際關係」放在一起，讓每個地方成為可以回看的生活節點。
           </p>

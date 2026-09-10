@@ -393,8 +393,8 @@ const systemTreeModules = [
 const futureRoadmap = [
   {
     phase: '短期',
-    title: '持續優化網站功能',
-    text: '修整日記、地圖、好友、通知與管理流程，讓網站版更穩定、更完整。',
+    title: '降低真實情境的記錄門檻',
+    text: '持續優化網站功能，加入照片與語音輸入，讓移動中也能快速留下記憶。',
     icon: <Compass size={22} />
   },
   {
@@ -748,7 +748,7 @@ export default function PresentationPage() {
             </motion.article>
           ))}
         </div>
-        <p className="future-copy">未來 Adrift 將持續強化定位式日記的真實性、好友互動與 Adrift Intelligence 洞察能力，讓使用者能更自然地回顧生活中的地點、情緒與記憶。</p>
+        <p className="future-copy">根據實際使用情境的回饋，我們將 Adrift 定位為「城市記憶系統」：降低記錄門檻，讓長期累積的日記把地圖慢慢變成自己的生活記憶。</p>
       </SlideSection>
 
       <SlideSection id="team" eyebrow="Team" title="分工表" subtitle="以下為本專題主要分工與網站實作補充。">
