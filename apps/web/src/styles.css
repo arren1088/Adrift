@@ -4510,19 +4510,6 @@ select option {
   line-height: 1.7;
 }
 
-.auth-brand-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  width: fit-content;
-  max-width: min(520px, 100%);
-  margin-top: 12px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  color: #ccecf8;
-  font-size: 0.88rem;
-}
-
 .auth-floating-light {
   position: absolute;
   z-index: -1;
@@ -4561,7 +4548,6 @@ select option {
   align-content: start;
   gap: 20px;
   width: min(440px, 100%);
-  min-height: 520px;
   justify-self: end;
   padding: 28px;
   border-radius: 22px;
@@ -4596,7 +4582,6 @@ select option {
   display: grid;
   align-content: start;
   gap: 16px;
-  min-height: 156px;
 }
 
 .auth-input {
@@ -4629,35 +4614,9 @@ select option {
   font-weight: 900;
 }
 
-.auth-progress {
-  display: grid;
-  gap: 8px;
-}
-
-.auth-progress > span {
-  color: #8eb7c9;
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-
-.auth-progress-track {
-  height: 3px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(196, 235, 255, 0.12);
-}
-
-.auth-progress-track i {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #4dc5ff, #79f1dc);
-  transition: width var(--duration-slow) var(--ease-soft);
-}
-
 .auth-selected-email {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 9px;
   min-height: 42px;
@@ -4676,7 +4635,6 @@ select option {
   white-space: nowrap;
 }
 
-.auth-selected-email button,
 .auth-back-button {
   color: #8eeedc;
   background: transparent;
@@ -4701,17 +4659,8 @@ select option {
   border-radius: 14px;
 }
 
-.auth-back-button:hover:not(:disabled),
-.auth-selected-email button:hover {
+.auth-back-button:hover:not(:disabled) {
   color: #ffffff;
-}
-
-.auth-privacy-note {
-  align-self: end;
-  margin: auto 0 0;
-  color: #789bad;
-  font-size: 0.74rem;
-  line-height: 1.55;
 }
 
 .admin-detail-modal header,
@@ -8819,7 +8768,6 @@ select option {
 }
 
 :root[data-theme="bright"] .auth-card,
-:root[data-theme="bright"] .auth-brand-note,
 :root[data-theme="bright"] .memory-item,
 :root[data-theme="bright"] .friend-page-card,
 :root[data-theme="bright"] .friends-hub-card,
@@ -9921,7 +9869,6 @@ select option {
 
 :root[data-theme="bright"] :where(
   .auth-card,
-  .auth-brand-note,
   .product-navbar,
   .memory-panel,
   .diary-side-panel,
@@ -10921,13 +10868,8 @@ select option {
     font-size: clamp(2.2rem, 10vw, 3.1rem);
   }
 
-  .auth-brand-note {
-    display: none;
-  }
-
   .auth-card {
     width: min(440px, 100%);
-    min-height: 0;
     justify-self: center;
     padding: 22px;
   }
@@ -13606,7 +13548,6 @@ select option {
   background: rgba(242, 251, 255, 0.92);
 }
 
-:root[data-theme="bright"] .auth-selected-email button,
 :root[data-theme="bright"] .auth-back-button {
   color: var(--accent);
 }
@@ -13616,18 +13557,8 @@ select option {
   background: rgba(255, 255, 255, 0.72);
 }
 
-:root[data-theme="bright"] .auth-back-button:hover:not(:disabled),
-:root[data-theme="bright"] .auth-selected-email button:hover {
+:root[data-theme="bright"] .auth-back-button:hover:not(:disabled) {
   color: var(--accent-hover);
-}
-
-:root[data-theme="bright"] .auth-progress > span,
-:root[data-theme="bright"] .auth-privacy-note {
-  color: var(--text-muted);
-}
-
-:root[data-theme="bright"] .auth-progress-track {
-  background: rgba(0, 143, 199, 0.13);
 }
 
 .mood-intensity-field input.mood-intensity-slider,

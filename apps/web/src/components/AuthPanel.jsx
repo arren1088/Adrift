@@ -8,7 +8,6 @@ import {
   EyeOff,
   LogIn,
   Mail,
-  MapPinned,
   UserPlus
 } from 'lucide-react';
 import { useState } from 'react';
@@ -35,8 +34,6 @@ export default function AuthPanel({ onAuth, onClearError, onClearNotice, loading
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const stepNumber = step === STEP.EMAIL ? 1 : step === STEP.REGISTER_PASSWORD ? 3 : 2;
-  const totalSteps = mode === 'register' ? 3 : 2;
   const visibleMessage = stepError || error || (step === STEP.EMAIL ? notice : '');
 
   function validateField(field, values = form) {
@@ -170,15 +167,7 @@ export default function AuthPanel({ onAuth, onClearError, onClearNotice, loading
       <AuthBrand />
 
       <motion.aside className="auth-card glass" {...modalPopMotion}>
-        <div className="auth-progress" aria-label={`第 ${stepNumber} 步，共 ${totalSteps} 步`}>
-          <span>{stepNumber} / {totalSteps}</span>
-          <div className="auth-progress-track" aria-hidden="true">
-            <i style={{ width: `${(stepNumber / totalSteps) * 100}%` }} />
-          </div>
-        </div>
-
         <div className="auth-card-header">
-          <p className="eyebrow">Adrift Account</p>
           <h1>{copy.title}</h1>
           <p>{copy.subtitle}</p>
         </div>
@@ -187,7 +176,6 @@ export default function AuthPanel({ onAuth, onClearError, onClearNotice, loading
           <div className="auth-selected-email">
             <Mail size={16} />
             <span>{form.email}</span>
-            <button type="button" onClick={() => moveTo(STEP.EMAIL)}>更換 Email</button>
           </div>
         )}
 
@@ -241,7 +229,6 @@ export default function AuthPanel({ onAuth, onClearError, onClearNotice, loading
           </AnimatePresence>
         </form>
 
-        <p className="auth-privacy-note">我們只會用 Email 確認帳號流程，不會在此顯示其他帳號資料。</p>
       </motion.aside>
     </motion.section>
   );
@@ -263,10 +250,6 @@ function AuthBrand() {
       <p className="eyebrow">Adrift 漂流足跡</p>
       <h1>把生活，<br /><span className="auth-brand-line">留在發生的地方。</span></h1>
       <p className="auth-brand-body">在地圖上記錄地點、心情與故事，讓每段生活軌跡慢慢成為自己的城市記憶。</p>
-      <div className="auth-brand-note glass">
-        <MapPinned size={18} />
-        <span>一個 Email，帶你回到所有曾經留下的記憶。</span>
-      </div>
     </motion.section>
   );
 }
