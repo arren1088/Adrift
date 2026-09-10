@@ -57,6 +57,7 @@ Thumbs.db
 .cursor/
 .copilot/
 *.prompt.md
+skills-lock.json
 
 # Temporary files
 tmp/
